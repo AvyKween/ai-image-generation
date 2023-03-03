@@ -3,7 +3,7 @@ import { Card, FormField, Loader } from '../components';
 
 import { Post } from '../interfaces';
 
-const testData = [
+const testData: Post[] = [
   {
     _id: '123',
     createdAt: 10
