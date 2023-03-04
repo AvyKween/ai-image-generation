@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Card, FormField, Loader } from '../components';
 
-import { Post } from '../interfaces';
+import { testData } from '../constants';
+import { CardGridType, Post } from '../interfaces';
 
-const testData: Post[] = [
-  {
-    _id: '123',
-    createdAt: 10
-  }
-]
 
-const RenderCards = ({ data, title }: { data: Post[], title: string }) => {
+
+const RenderCards = ({ data, title }: CardGridType ) => {
   if (data?.length > 0) {
     return (
       <>
