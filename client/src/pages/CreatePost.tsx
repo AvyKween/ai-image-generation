@@ -51,8 +51,6 @@ export const CreatePost = () => {
 
         const data = await response.json();
 
-        console.log(data);
-
         setForm({
           ...form,
           photo: `data:image/jpeg;base64,${data.photo}`
@@ -63,6 +61,7 @@ export const CreatePost = () => {
         setGeneratingImg(false)
       }
     } else {
+      alert('Please enter a prompt');
       console.log('Please enter a prompt');
     }
   }
