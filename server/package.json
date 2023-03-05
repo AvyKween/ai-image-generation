@@ -1,0 +1,33 @@
+{
+  "name": "express-mongo-rest-server",
+  "version": "1.0.0",
+  "description": "Rest Server with Typescript+Express+Mongo",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev:setup": "wait-on dist/index.js && nodemon dist/index.js",
+    "dev": "concurrently \"tsc --watch\" \"yarn dev:setup\""
+  },
+  "keywords": [],
+  "author": "AvyKween",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.34.0",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.5",
+    "wait-on": "^7.0.1"
+  },
+  "dependencies": {
+    "cloudinary": "^1.35.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "openai": "^3.2.1"
+  }
+}
