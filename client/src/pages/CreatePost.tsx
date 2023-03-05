@@ -36,8 +36,35 @@ export const CreatePost = () => {
     })
   }
   
-  const generateImage: React.MouseEventHandler = () => {
+  const generateImage: React.MouseEventHandler = async() => {
+    
+    if (form.prompt) {
+      try {
+        setGeneratingImg(true);
+        const response = await fetch('http://localhost:4000/api/v1/dalle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt: form.prompt })
+        })
 
+        const data = await response.json();
+
+        console.log(data);
+
+        setForm({
+          ...form,
+          photo: `data:image/jpeg;base64,${data.photo}`
+        })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setGeneratingImg(false)
+      }
+    } else {
+      console.log('Please enter a prompt');
+    }
   }
   
 
