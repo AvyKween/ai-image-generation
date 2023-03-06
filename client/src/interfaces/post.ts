@@ -12,3 +12,13 @@ export interface CardGridType {
     data: Post[],
     title: string
 }
+
+export interface GetPosts {
+    ok: boolean,
+    posts: Post[]
+}
+
+export interface CreateImage {
+    ok: boolean,
+    photo: string
+}

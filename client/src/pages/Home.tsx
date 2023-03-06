@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Card, FormField, Loader } from '../components';
+import { postsApi } from '../api';
 
-import { CardGridType, Post } from '../interfaces';
+import { CardGridType, Post, GetPosts } from '../interfaces';
 import { getRandomPrompt } from '../utils';
 
 
@@ -23,11 +24,9 @@ const RenderCards = ({ data, title }: CardGridType ) => {
 export const Home = () => {
 
   const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [searchedResults, setSearchedResults] = useState([])
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [searchedResults, setSearchedResults] = useState<Post[]>([])
   const [searchText, setSearchText] = useState('')
-
-  const [searchTimeout, setSearchTimeout] = useState<number | undefined >()
 
   const randomPrompt = useMemo(() => getRandomPrompt(''), [])
 
@@ -38,17 +37,15 @@ export const Home = () => {
       setLoading(true)
 
       try {
-        const response = await fetch('http://localhost:4000/api/v1/post', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
 
-        if (response.ok) {
-          const result = await response.json();
-          
-          setPosts(result.posts.reverse());
+        const { data } = await postsApi.get<GetPosts>('/post', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (data.ok) {
+          setPosts(data.posts.reverse());
         }
         
       } catch (error) {

@@ -5,6 +5,8 @@ import { preview } from '../assets';
 import { getRandomName, getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
 import { initialPostState } from '../constants';
+import { postsApi } from '../api';
+import { CreateImage } from '../interfaces';
 
 export const CreatePost = () => {
   
@@ -23,15 +25,12 @@ export const CreatePost = () => {
       setLoading(true);
       
       try {
-        const response = await fetch('http://localhost:4000/api/v1/post', {
-          method: 'POST',
+        await postsApi.post('/post', form, {
           headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(form)
-        });
+            "Content-Type": 'application/json', 
+          }
+        })
 
-        await response.json();
         navigate('/');
         
       } catch (error) {
@@ -67,20 +66,20 @@ export const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('http://localhost:4000/api/v1/dalle', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ prompt: form.prompt })
-        })
 
-        const data = await response.json();
+        const { data } = await postsApi.post<CreateImage>('/dalle', {
+          prompt: form.prompt
+        }, {
+          headers: {
+            "Content-Type": 'application/json'
+          }
+        })
 
         setForm({
           ...form,
           photo: `data:image/jpeg;base64,${data.photo}`
         })
+
 
       } catch (error) {
         console.log(error)
