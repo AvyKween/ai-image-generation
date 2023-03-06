@@ -1,7 +1,11 @@
 
+export type Base64<imageType extends string> = `data:image/${imageType};base64${string}`
+
 export interface Post {
     _id: string;
-    createdAt: number;
+    name: string;
+    prompt: string;
+    photo: Base64<'jpg'>;
 }
 
 export interface CardGridType {
