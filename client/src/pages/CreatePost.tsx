@@ -25,7 +25,7 @@ export const CreatePost = () => {
       setLoading(true);
       
       try {
-        await postsApi.post('/post', form, {
+        await postsApi.post('/api/v1/post', form, {
           headers: {
             "Content-Type": 'application/json', 
           }
@@ -67,7 +67,7 @@ export const CreatePost = () => {
       try {
         setGeneratingImg(true);
 
-        const { data } = await postsApi.post<CreateImage>('/dalle', {
+        const { data } = await postsApi.post<CreateImage>('/api/v1/dalle', {
           prompt: form.prompt
         }, {
           headers: {

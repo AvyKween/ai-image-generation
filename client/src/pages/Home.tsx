@@ -38,7 +38,7 @@ export const Home = () => {
 
       try {
 
-        const { data } = await postsApi.get<GetPosts>('/post', {
+        const { data } = await postsApi.get<GetPosts>('/api/v1/post', {
           headers: {
             'Content-Type': 'application/json'
           }
