@@ -8,7 +8,7 @@ import { initialPostState } from '../constants';
 
 export const CreatePost = () => {
   
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialPostState);
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -16,9 +16,35 @@ export const CreatePost = () => {
   const randomName = useMemo(() => getRandomName(''), [])
   const randomPrompt = useMemo(() => getRandomPrompt(''), [])
 
-  const handleSubmit: React.FormEventHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: React.FormEventHandler = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('submit');
+
+    if ( form.prompt && form.photo ) {
+      setLoading(true);
+      
+      try {
+        const response = await fetch('http://localhost:4000/api/v1/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form)
+        });
+
+        await response.json();
+        navigate('/');
+        
+      } catch (error) {
+        console.log(error);
+
+      } finally {
+        setLoading(false);
+      }
+
+    } else {
+      alert('Please enter a prompt and generate and image');
+      console.log('Please enter a prompt and generate and image');
+    }
   }
 
   const handleChange: React.FormEventHandler<Element> = (e: React.FormEvent<HTMLInputElement>) => {
@@ -55,11 +81,14 @@ export const CreatePost = () => {
           ...form,
           photo: `data:image/jpeg;base64,${data.photo}`
         })
+
       } catch (error) {
         console.log(error)
+
       } finally {
         setGeneratingImg(false)
       }
+
     } else {
       alert('Please enter a prompt');
       console.log('Please enter a prompt');
