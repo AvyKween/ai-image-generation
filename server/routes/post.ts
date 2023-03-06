@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getPosts } from '../controllers/posts';
-import { v2 as cloudinary } from 'cloudinary';
+import { getPosts, createPost } from '../controllers/posts';
 
 const router = Router();
 
 router.get('/', getPosts);
+router.post('/', createPost);
 
 export default router;
