@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card, FormField, Loader } from '../components';
 import { postsApi } from '../api';
 
@@ -30,6 +30,7 @@ export const Home = () => {
 
   const randomPrompt = useMemo(() => getRandomPrompt(''), [])
 
+  const debounceRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
     
@@ -61,12 +62,18 @@ export const Home = () => {
     
   }, [])
   
-  const handleSearchChange: React.FormEventHandler<Element> = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleSearchChange: React.FormEventHandler<Element> = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    if ( debounceRef.current ) {
+      clearTimeout( debounceRef.current )
+    }
+
     setSearchText(e.currentTarget.value)
 
-    const searchResults = posts.filter( (item: Post) => item.name.toLowerCase().includes( e.currentTarget.value.toLowerCase() ) || item.prompt.toLowerCase().includes( e.currentTarget.value.toLowerCase() ) );
-  
-    setSearchedResults(searchResults);
+    debounceRef.current = setTimeout(() => {  
+      const searchResults = posts.filter( (item: Post) => item.name.toLowerCase().includes( e.target.value.toLowerCase() ) || item.prompt.toLowerCase().includes( e.target.value.toLowerCase() ) );
+      setSearchedResults(searchResults);
+    }, 350)
   }
 
 
